@@ -1,15 +1,19 @@
 import { Router } from 'express';
-import authorization from '../middlewares/authorization.js';
 import upload from '../middlewares/upload.js';
-import validation from '../middlewares/validation.js';
+import authorization from '../middlewares/authorization.js';
 import schemas from '../middlewares/schemas/posts.schema.js';
-
+import validation from '../middlewares/validation.js';
 import controller from '../controllers/posts.js'
 
+//
 const router = Router();
 
+
+//router
 router.get('/', controller.feed);
 
+
+//[posts
 router.post(
     '/',
     authorization,
@@ -23,6 +27,11 @@ router.post(
     authorization,
     controller.like
 );
+
+// router.post(
+//     '/:id/like',
+//     controller.like
+// );
 
 router.post(
     '/:id/comment',
