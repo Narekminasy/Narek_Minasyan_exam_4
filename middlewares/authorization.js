@@ -15,6 +15,7 @@ export default async (req, res, next) => {
             return;
         }
 
+
         let decryptData = null;
 
         try {
