@@ -1,19 +1,29 @@
-import { Router } from "express";
+import { Router } from 'express';
 
-const indexPages = Router();
+import usersRouter from './users.js';
+import postsRouter from './posts.js';
+import chatRouter  from './chat.js';
 
-indexPages.get("/home",(req, res) => {
-    res.send("main.ejs");
+const router = Router();
+
+router.get('/', (req, res) => {
+    res.render('feed', { title: 'Лента — Instagram' });
 });
 
-indexPages.get('/register', (req, res) => {
-    res.send('register.ejs');
+router.get('/login', (req, res) => {
+    res.render('login', { title: 'Войти — Instagram' });
 });
 
-indexPages.get('/login', (req, res) => {
-    res.send('login.ejs');
+router.get('/register', (req, res) => {
+    res.render('register', { title: 'Регистрация — Instagram' });
 });
 
+router.get('/chat', (req, res) => {
+    res.render('chat', { title: 'Чат — Instagram' });
+});
 
-export default indexPages;
+router.use('/users', usersRouter);
+router.use('/posts', postsRouter);
+router.use('/api/chat', chatRouter);
 
+export default router;

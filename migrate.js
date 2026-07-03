@@ -1,8 +1,21 @@
-// import DBMysql from "./clients/db.mysql.js";
+import { Users, Posts, Likes, Messages, Comments } from "./models/index.js";
 
-import './clients/db.sequelize.js';
+(async () => {
+    console.log("Running migration...");
 
-;(async () => {
+    const models = [Users, Posts, Likes, Messages, Comments];
 
-    console.log('running connection...');
+    for (const model of models) {
+        try {
+            console.log("model -> ", model.name);
+
+            await model.sync({ alter: true });
+
+            await model?.createDefaults?.();
+        } catch (err) {
+            console.error(err);
+        }
+    }
+
+    console.log("Migration finished successfully.");
 })();

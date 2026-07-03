@@ -1,35 +1,46 @@
-import path from 'path'
-import './migrate.js';
-import express from 'express';
-import 'dotenv/config';
-import {fileURLToPath} from "url";
+import "dotenv/config";
+import path from "path";
 import morgan from "morgan";
-import cookieParser from 'cookie-parser';
-import mainRouter  from './routes/users.js';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+import express from "express";
+import { createServer } from "http";
+import { fileURLToPath } from "url";
+import "./migrate.js";
+import routes from "./routes/index.js";
+import errorHandler from "./middlewares/errorHanlder.js";
+import Socket from "./services/Socket.js";
 
 const app = express();
 
-const {PORT} = process.env || 3000;
+//fileli
+const __filename = fileURLToPath(import.meta.url);
+const __dirname  = path.dirname(__filename);
 
-app.use(cookieParser(process.env.COOKIE_SECRET));
+const { PORT } = process.env;
 
-app.use(morgan('dev'));
+//app sets
+app.set("view engine", "ejs");
+app.set("views", path.join(__dirname, "views"));
+
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(morgan("dev"));
 
-//views
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use("/media", express.static(path.join(__dirname, "public/media")));
+app.use("/css", express.static(path.join(__dirname, "public/css")));
+app.use("/js", express.static(path.join(__dirname, "public/js")));
 
-//express home
+//routes
+app.use(routes);
 
-app.use(mainRouter);
+//routes error
+app.use(errorHandler.notFound);
+app.use(errorHandler.errors);
 
-app.listen(PORT,()=>{
-    console.log(`Listening on port ${PORT}`);
+const server = createServer(app);
+
+await Socket.init(server);
+
+server.listen(PORT, () => {
+    console.log(`App listening on port ${PORT}`);
 });
