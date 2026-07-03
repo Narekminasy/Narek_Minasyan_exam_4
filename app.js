@@ -26,9 +26,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
 
-app.use("/media", express.static(path.join(__dirname, "public/media")));
 app.use("/css", express.static(path.join(__dirname, "public/css")));
-app.use("/js", express.static(path.join(__dirname, "public/js")));
+
 
 //routes
 app.use(routes);
