@@ -43,7 +43,9 @@ Users.init(
         },
         activationToken: {
             type: DataTypes.STRING,
+
         },
+
     },
     {
         sequelize: db,
@@ -52,5 +54,7 @@ Users.init(
         timestamps: true,
     },
 );
+
+
 
 export default Users;
