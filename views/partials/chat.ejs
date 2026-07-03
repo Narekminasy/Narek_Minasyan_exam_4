@@ -1,0 +1,152 @@
+<%- include('partials/header', { title: 'Чат — Instagram' }) %>
+
+<div class="chat-page" style="padding:0 20px;max-width:935px;margin:0 auto;">
+    <div class="chat-layout">
+
+        <!-- Sidebar -->
+        <aside class="chat-sidebar">
+
+            <div class="chat-sidebar__header">
+                Сообщения
+            </div>
+
+            <div class="chat-new-message">
+                <input
+                        type="number"
+                        id="new-chat-id"
+                        min="1"
+                        placeholder="ID пользователя"
+                >
+
+                <button id="open-chat-btn">
+                    Открыть
+                </button>
+            </div>
+
+            <div class="chat-conversations" id="conversations-list">
+                <div
+                        style="
+                        padding:20px;
+                        color:var(--text-light);
+                        text-align:center;
+                        font-size:14px;
+                    "
+                >
+                    Введите ID пользователя чтобы начать чат
+                </div>
+            </div>
+
+        </aside>
+
+        <!-- Chat -->
+
+        <section class="chat-main" id="chat-main">
+
+            <div class="chat-empty">
+
+                <div style="text-align:center">
+
+                    <div style="font-size:48px;margin-bottom:10px;">
+                        💬
+                    </div>
+
+                    <div>
+                        Выберите чат или введите ID пользователя
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+
+    const token = localStorage.getItem("token");
+    const me = JSON.parse(localStorage.getItem("user") || "null");
+
+    if (!token || !me) {
+        showToast?.("Войдите для доступа к чату", "error");
+
+        setTimeout(() => {
+            location.href = "/login";
+        }, 1000);
+    }
+
+    let socket = null;
+    let activeUserId = null;
+
+    /*
+        conversations = {
+            5: [],
+            7: [],
+            10: []
+        }
+    */
+
+    const conversations = {};
+
+    connectSocket();
+
+    document
+        .getElementById("open-chat-btn")
+        .addEventListener("click", openChat);
+
+    document
+        .getElementById("new-chat-id")
+        .addEventListener("keydown", e => {
+            if (e.key === "Enter") {
+                openChat();
+            }
+        });
+
+    /* =====================================
+                SOCKET
+    ===================================== */
+
+    function connectSocket() {
+
+        if (!token) return;
+
+        socket = io({
+            auth: { token }
+        });
+
+        socket.on("connect", () => {
+            console.log("Socket connected");
+        });
+
+        socket.on("connect_error", err => {
+            console.error(err.message);
+        });
+
+        socket.on("new_message", message => {
+
+            const otherId = String(
+                message.from == me.id
+                    ? message.to
+                    : message.from
+            );
+
+            if (!conversations[otherId]) {
+                conversations[otherId] = [];
+            }
+
+            conversations[otherId].push(message);
+
+            addConversation(otherId, message.message);
+
+            if (activeUserId === otherId) {
+                appendMessage(message, message.from == me.id);
+            } else {
+                showToast(`Новое сообщение от #${otherId}`);
+            }
+
+        });
+
+    }

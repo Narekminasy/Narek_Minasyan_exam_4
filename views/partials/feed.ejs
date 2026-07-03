@@ -1,0 +1,202 @@
+<%- include('partials/header', { title: 'Лента — Instagram' }) %>
+
+<div class="feed-layout">
+
+    <!-- Feed -->
+    <main id="feed-main">
+
+        <!-- Create Post -->
+        <section
+                id="create-post-section"
+                class="create-post-card"
+                style="display:none"
+        >
+
+            <h3>✨ Создать публикацию</h3>
+
+            <div class="upload-zone" id="upload-zone">
+
+                <input
+                        type="file"
+                        id="post-image"
+                        accept="image/*"
+                        onchange="previewImage(this)"
+                >
+
+                <div class="upload-zone__icon">
+                    📷
+                </div>
+
+                <div class="upload-zone__text">
+                    Нажмите или перетащите изображение
+                </div>
+
+            </div>
+
+            <img
+                    id="upload-preview"
+                    class="upload-preview"
+                    alt="preview"
+            >
+
+            <textarea
+                    id="post-caption"
+                    class="caption-input"
+                    placeholder="Напишите подпись..."
+            ></textarea>
+
+            <button
+                    class="btn btn-primary"
+                    style="margin-top:10px"
+                    onclick="createPost()"
+            >
+                Опубликовать
+            </button>
+
+        </section>
+
+        <!-- Posts -->
+
+        <section id="posts-container">
+
+            <div class="posts-loading">
+                <div class="spinner"></div>
+            </div>
+
+        </section>
+
+        <div
+                id="load-more-container"
+                style="display:none;text-align:center;padding:20px"
+        >
+
+            <button
+                    class="btn btn-secondary"
+                    style="width:auto;padding:8px 24px"
+                    onclick="loadMore()"
+            >
+                Загрузить ещё
+            </button>
+
+        </div>
+
+    </main>
+
+    <!-- Sidebar -->
+
+    <aside
+            id="feed-sidebar"
+            class="feed-sidebar"
+    ></aside>
+
+</div>
+
+<script>
+
+    const token = localStorage.getItem("token");
+    const me = JSON.parse(
+        localStorage.getItem("user") || "null"
+    );
+
+    let page = 1;
+    const limit = 5;
+
+    let loading = false;
+    let hasMore = true;
+
+    if (token && me) {
+
+        document
+            .getElementById("create-post-section")
+            .style.display = "block";
+
+        renderSidebar();
+
+    }
+
+    loadPosts(true);
+
+    /* ===========================
+            POSTS
+    =========================== */
+
+    async function loadPosts(reset = false) {
+
+        if (loading || !hasMore) {
+            return;
+        }
+
+        loading = true;
+
+        try {
+
+            const response = await fetch(
+                `/posts?page=${page}&limit=${limit}`
+            );
+
+            const posts = await response.json();
+
+            const container =
+                document.getElementById("posts-container");
+
+            if (reset) {
+                container.innerHTML = "";
+            }
+
+            if (!posts.length && page === 1) {
+
+                container.innerHTML = `
+                <div class="no-posts">
+
+                    <div class="no-posts__icon">
+                        📷
+                    </div>
+
+                    <p>
+                        Нет публикаций.
+                        Будьте первым!
+                    </p>
+
+                </div>
+            `;
+
+                return;
+
+            }
+
+            posts.forEach(post => {
+                container.insertAdjacentHTML(
+                    "beforeend",
+                    renderPost(post)
+                );
+            });
+
+            hasMore = posts.length === limit;
+
+            document.getElementById(
+                "load-more-container"
+            ).style.display = hasMore
+                ? "block"
+                : "none";
+
+            page++;
+
+        }
+
+        catch (error) {
+
+            console.error(error);
+
+        }
+
+        finally {
+
+            loading = false;
+
+        }
+
+    }
+
+    function loadMore() {
+        loadPosts();
+    }

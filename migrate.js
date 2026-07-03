@@ -8,12 +8,14 @@ import { Users, Posts, Likes, Messages, Comments } from "./models/index.js";
     for (const model of models) {
         try {
             console.log("model -> ", model.name);
+            await model.sync();
 
-            await model.sync({ alter: true });
+            if (typeof model.createDefaults === "function") {
+                await model.createDefaults();
+            }
 
-            await model?.createDefaults?.();
         } catch (err) {
-            console.error(err);
+            console.error("Migration error:", err);
         }
     }
 

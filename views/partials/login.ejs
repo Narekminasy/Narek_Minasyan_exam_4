@@ -1,0 +1,159 @@
+<%- include('partials/header', { title: 'Войти — Instagram' }) %>
+
+<div class="auth-page">
+    <div class="auth-box">
+
+        <div class="auth-box__logo">Instagram</div>
+
+        <h2>
+            Войдите, чтобы видеть фото и видео ваших друзей
+        </h2>
+
+        <div id="alert-container"></div>
+
+        <!-- Email -->
+        <div class="form-group">
+            <input
+                    type="email"
+                    id="email"
+                    placeholder="Электронная почта"
+                    autocomplete="email"
+            />
+            <div class="field-error" id="email-error"></div>
+        </div>
+
+        <!-- Password -->
+        <div class="form-group">
+            <input
+                    type="password"
+                    id="password"
+                    placeholder="Пароль"
+                    autocomplete="current-password"
+            />
+            <div class="field-error" id="password-error"></div>
+        </div>
+
+        <!-- Submit -->
+        <button
+                class="btn btn-primary"
+                id="login-btn"
+                onclick="handleLogin()"
+        >
+            Войти
+        </button>
+
+        <div class="auth-switch">
+            Нет аккаунта?
+            <a href="/register">Зарегистрироваться</a>
+        </div>
+
+    </div>
+</div>
+
+<script>
+
+    const emailEl = document.getElementById("email");
+    const passwordEl = document.getElementById("password");
+    const btn = document.getElementById("login-btn");
+    const alertBox = document.getElementById("alert-container");
+
+    if (localStorage.getItem("token")) {
+        window.location.href = "/";
+    }
+
+    /* =========================
+            LOGIN
+    ========================= */
+
+    async function handleLogin() {
+
+        const email = emailEl.value.trim();
+        const password = passwordEl.value;
+
+        clearErrors();
+        alertBox.innerHTML = "";
+
+        if (!email || !password) {
+            showAlert("Заполните все поля", "error");
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+
+            const res = await fetch("/users/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ email, password })
+            });
+
+            const data = await res.json();
+
+            if (!res.ok) {
+                handleErrors(data);
+                return;
+            }
+
+            localStorage.setItem("token", data.token);
+            localStorage.setItem("user", JSON.stringify(data.user));
+
+            window.location.href = "/";
+
+        } catch (err) {
+            showAlert("Ошибка сети. Попробуйте снова.", "error");
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    /* =========================
+            HELPERS
+    ========================= */
+
+    function handleErrors(data) {
+
+        const errors = data.errors || {};
+
+        if (errors.email) {
+            document.getElementById("email-error").textContent = errors.email;
+        }
+
+        if (errors.password) {
+            document.getElementById("password-error").textContent = errors.password;
+        }
+
+        if (!errors.email && !errors.password) {
+            showAlert(data.message || "Ошибка входа", "error");
+        }
+
+    }
+
+    function clearErrors() {
+        document.getElementById("email-error").textContent = "";
+        document.getElementById("password-error").textContent = "";
+    }
+
+    function setLoading(state) {
+        btn.disabled = state;
+        btn.textContent = state ? "Входим..." : "Войти";
+    }
+
+    function showAlert(message, type = "error") {
+        alertBox.innerHTML = `
+    <div class="alert alert-${type}">
+      ${message}
+    </div>
+  `;
+    }
+
+    /* Enter key support */
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") handleLogin();
+    });
+
+</script>
+
+<%- include('partials/footer') %>

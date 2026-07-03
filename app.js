@@ -6,7 +6,7 @@ import { createServer } from "http";
 import { fileURLToPath } from "url";
 import "./migrate.js";
 import routes from "./routes/index.js";
-import errorHandler from "./middlewares/errorHanlder.js";
+import errorHandler from "./middlewares/errorHandler.js";
 import Socket from "./services/Socket.js";
 
 const app = express();
