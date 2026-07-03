@@ -12,6 +12,7 @@ router.post(
     controller.sendMessage,
 );
 
+
 router.get(
     '/messages/:fromId',
     authorization,
