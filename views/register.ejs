@@ -1,4 +1,4 @@
-<%- include('partials/header', { title: 'Регистрация — Instagram' }) %>
+<%- include('partials/header', { title: 'Register Instagram' }) %>
 
 <div class="auth-page">
     <div class="auth-box">
@@ -6,67 +6,43 @@
         <div class="auth-box__logo">Instagram</div>
 
         <h2>
-            Зарегистрируйтесь, чтобы видеть фото и видео ваших друзей
+            Create an account to see photos and videos from your friends
         </h2>
 
         <div id="alert-container"></div>
 
         <!-- Name -->
         <div class="form-group">
-            <input
-                    type="text"
-                    id="name"
-                    placeholder="Полное имя"
-                    autocomplete="name"
-            />
+            <input type="text" id="name" placeholder="Full name" autocomplete="name" />
             <div class="field-error" id="name-error"></div>
         </div>
 
         <!-- Username -->
         <div class="form-group">
-            <input
-                    type="text"
-                    id="username"
-                    placeholder="Имя пользователя"
-                    autocomplete="username"
-            />
+            <input type="text" id="username" placeholder="Username" autocomplete="username" />
             <div class="field-error" id="username-error"></div>
         </div>
 
         <!-- Email -->
         <div class="form-group">
-            <input
-                    type="email"
-                    id="email"
-                    placeholder="Электронная почта"
-                    autocomplete="email"
-            />
+            <input type="email" id="email" placeholder="Email" autocomplete="email" />
             <div class="field-error" id="email-error"></div>
         </div>
 
         <!-- Password -->
         <div class="form-group">
-            <input
-                    type="password"
-                    id="password"
-                    placeholder="Пароль"
-                    autocomplete="new-password"
-            />
+            <input type="password" id="password" placeholder="Password" autocomplete="new-password" />
             <div class="field-error" id="password-error"></div>
         </div>
 
         <!-- Submit -->
-        <button
-                class="btn btn-primary"
-                id="reg-btn"
-                onclick="handleRegister()"
-        >
-            Зарегистрироваться
+        <button class="btn btn-primary" id="reg-btn" onclick="handleRegister()">
+            Register
         </button>
 
         <div class="auth-switch">
-            Уже есть аккаунт?
-            <a href="/login">Войти</a>
+            Already have an account?
+            <a href="/login">Login</a>
         </div>
 
     </div>
@@ -83,10 +59,7 @@
         window.location.href = "/";
     }
 
-    /* =========================
-            REGISTER
-    ========================= */
-
+    /* REGISTER */
     async function handleRegister() {
 
         const name = getValue("name");
@@ -98,7 +71,7 @@
         alertBox.innerHTML = "";
 
         if (!name || !username || !email || !password) {
-            showAlert("Заполните все поля", "error");
+            showAlert("Please fill in all fields.", "error");
             return;
         }
 
@@ -108,15 +81,8 @@
 
             const res = await fetch("/users/register", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify({
-                    name,
-                    username,
-                    email,
-                    password
-                })
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ name, username, email, password })
             });
 
             const data = await res.json();
@@ -127,24 +93,21 @@
             }
 
             showAlert(
-                `✅ ${data.message || "Регистрация успешна!"}<br>
-       Проверьте вашу почту для активации аккаунта.`,
+                `✅ ${data.message || "Registration successful!"}<br>
+                Please check your email.`,
                 "success"
             );
 
             clearFields();
 
         } catch (err) {
-            showAlert("Ошибка сети. Попробуйте снова.", "error");
+            showAlert("Network error.", "error");
         } finally {
             setLoading(false);
         }
     }
 
-    /* =========================
-            HELPERS
-    ========================= */
-
+    /* HELPERS */
     function getValue(id) {
         return document.getElementById(id).value.trim();
     }
@@ -158,20 +121,19 @@
             if (el) el.textContent = "";
         });
 
-        let hasFieldErrors = false;
+        let hasError = false;
 
         Object.keys(errors).forEach(key => {
             const el = document.getElementById(key + "-error");
             if (el) {
                 el.textContent = errors[key];
-                hasFieldErrors = true;
+                hasError = true;
             }
         });
 
-        if (!hasFieldErrors) {
-            showAlert(data.message || "Ошибка регистрации", "error");
+        if (!hasError) {
+            showAlert(data.message || "An error occurred.", "error");
         }
-
     }
 
     function clearErrors() {
@@ -191,19 +153,18 @@
     function setLoading(state) {
         btn.disabled = state;
         btn.textContent = state
-            ? "Регистрируем..."
-            : "Зарегистрироваться";
+            ? "Loading..."
+            : "Register";
     }
 
     function showAlert(message, type = "error") {
         alertBox.innerHTML = `
-    <div class="alert alert-${type}">
-      ${message}
-    </div>
-  `;
+        <div class="alert alert-${type}">
+            ${message}
+        </div>
+    `;
     }
 
-    /* Enter key support */
     document.addEventListener("keydown", (e) => {
         if (e.key === "Enter") handleRegister();
     });

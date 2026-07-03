@@ -2,13 +2,14 @@ import multer from "multer";
 import { v2 as cloudinary } from "cloudinary";
 import streamifier from "streamifier";
 
+
+//test fist time in cloudirary
 cloudinary.config({
     cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
     api_key: process.env.CLOUDINARY_API_KEY,
     api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-// multer → memory storage (ոչ disk)
 const upload = multer({
     storage: multer.memoryStorage(),
     limits: {
@@ -21,8 +22,6 @@ const upload = multer({
         cb(null, true);
     },
 });
-
-// upload to cloudinary helper
 export const uploadToCloudinary = (fileBuffer) => {
     return new Promise((resolve, reject) => {
         const stream = cloudinary.uploader.upload_stream(

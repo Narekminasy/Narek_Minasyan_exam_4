@@ -1,4 +1,4 @@
-<%- include('partials/header', { title: 'Лента — Instagram' }) %>
+<%- include('partials/header', { title: 'Instagram' }) %>
 
 <div class="feed-layout">
 
@@ -12,7 +12,7 @@
                 style="display:none"
         >
 
-            <h3>✨ Создать публикацию</h3>
+            <h3>✨ Create a Post</h3>
 
             <div class="upload-zone" id="upload-zone">
 
@@ -28,7 +28,7 @@
                 </div>
 
                 <div class="upload-zone__text">
-                    Нажмите или перетащите изображение
+                    Click or drag an image here
                 </div>
 
             </div>
@@ -42,7 +42,7 @@
             <textarea
                     id="post-caption"
                     class="caption-input"
-                    placeholder="Напишите подпись..."
+                    placeholder="Write a caption..."
             ></textarea>
 
             <button
@@ -50,7 +50,7 @@
                     style="margin-top:10px"
                     onclick="createPost()"
             >
-                Опубликовать
+                Publish
             </button>
 
         </section>
@@ -75,7 +75,7 @@
                     style="width:auto;padding:8px 24px"
                     onclick="loadMore()"
             >
-                Загрузить ещё
+                Load More
             </button>
 
         </div>
@@ -153,8 +153,8 @@
                     </div>
 
                     <p>
-                        Нет публикаций.
-                        Будьте первым!
+                        No posts yet.
+                        Be the first!
                     </p>
 
                 </div>

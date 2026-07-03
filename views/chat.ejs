@@ -1,4 +1,4 @@
-<%- include('partials/header', { title: 'Чат — Instagram' }) %>
+<%- include('partials/header', { title: 'Chat on Instagram' }) %>
 
 <div class="chat-page" style="padding:0 20px;max-width:935px;margin:0 auto;">
     <div class="chat-layout">
@@ -7,7 +7,7 @@
         <aside class="chat-sidebar">
 
             <div class="chat-sidebar__header">
-                Сообщения
+                Messages
             </div>
 
             <div class="chat-new-message">
@@ -15,11 +15,11 @@
                         type="number"
                         id="new-chat-id"
                         min="1"
-                        placeholder="ID пользователя"
+                        placeholder="User ID"
                 >
 
                 <button id="open-chat-btn">
-                    Открыть
+                    Open
                 </button>
             </div>
 
@@ -32,7 +32,7 @@
                         font-size:14px;
                     "
                 >
-                    Введите ID пользователя чтобы начать чат
+                    Enter a user ID to start a chat
                 </div>
             </div>
 
@@ -51,7 +51,7 @@
                     </div>
 
                     <div>
-                        Выберите чат или введите ID пользователя
+                        Select a user to start chatting
                     </div>
 
                 </div>
@@ -71,7 +71,7 @@
     const me = JSON.parse(localStorage.getItem("user") || "null");
 
     if (!token || !me) {
-        showToast?.("Войдите для доступа к чату", "error");
+        showToast?.("Please log in to access the chat", "error");
 
         setTimeout(() => {
             location.href = "/login";
@@ -144,7 +144,7 @@
             if (activeUserId === otherId) {
                 appendMessage(message, message.from == me.id);
             } else {
-                showToast(`Новое сообщение от #${otherId}`);
+                showToast(`New message from #${otherId}`);
             }
 
         });

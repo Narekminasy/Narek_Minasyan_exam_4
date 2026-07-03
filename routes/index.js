@@ -7,19 +7,27 @@ import chatRouter  from './chat.js';
 const router = Router();
 
 router.get('/', (req, res) => {
-    res.render('feed', { title: 'Лента — Instagram' });
+    res.render('feed');
 });
 
+// router.get('/login', (req, res) => {
+//     res.send("login ROUTE WORKS");
+// });
+
 router.get('/login', (req, res) => {
-    res.render('login', { title: 'Войти — Instagram' });
+    res.render('login');
 });
 
 router.get('/register', (req, res) => {
-    res.render('register', { title: 'Регистрация — Instagram' });
+    res.render('register');
 });
 
+// router.get('/register', (req, res) => {
+//     res.send("REGISTER ROUTE WORKS");
+// });
+
 router.get('/chat', (req, res) => {
-    res.render('chat', { title: 'Чат — Instagram' });
+    res.render('chat');
 });
 
 router.use('/users', usersRouter);

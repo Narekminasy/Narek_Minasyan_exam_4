@@ -1,0 +1,241 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary: #0095f6;
+    --primary-dark: #007cd1;
+    --bg: #fafafa;
+    --white: #ffffff;
+    --text: #262626;
+    --text-light: #8e8e8e;
+    --border: #dbdbdb;
+    --danger: #ed4956;
+    --radius: 10px;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial;
+    background: var(--bg);
+    color: var(--text);
+}
+
+/* NAVBAR */
+.navbar {
+    height: 54px;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+}
+
+.navbar__logo {
+    font-weight: 700;
+    font-size: 20px;
+    font-style: italic;
+}
+
+/* AUTH */
+.auth-page {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 54px);
+}
+
+.auth-box {
+    width: 100%;
+    max-width: 360px;
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 40px;
+}
+
+.auth-box__logo {
+    text-align: center;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 20px;
+    font-style: italic;
+}
+
+.auth-box h2 {
+    font-size: 14px;
+    text-align: center;
+    color: var(--text-light);
+    margin-bottom: 20px;
+}
+
+/* INPUTS */
+.form-group {
+    margin-bottom: 12px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--bg);
+    outline: none;
+    font-size: 14px;
+}
+
+.form-group input:focus {
+    border-color: var(--primary);
+}
+
+/* BUTTON */
+.btn {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-primary {
+    background: var(--primary);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: var(--primary-dark);
+}
+
+/* FEED */
+.feed-layout {
+    max-width: 935px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 30px;
+    padding: 30px 20px;
+}
+
+.post-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 20px;
+}
+
+/* POST IMAGE */
+.post-card__image {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* CHAT */
+.chat-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    height: calc(100vh - 54px);
+    max-width: 935px;
+    margin: 20px auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    background: var(--white);
+}
+
+.chat-sidebar {
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-sidebar__header {
+    padding: 16px;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border);
+}
+
+.chat-new-message {
+    display: flex;
+    gap: 8px;
+    padding: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+.chat-new-message input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+}
+
+.chat-new-message button {
+    background: var(--primary);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+/* MESSAGES */
+.chat-messages {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    overflow-y: auto;
+}
+
+.chat-message {
+    padding: 10px 14px;
+    border-radius: 18px;
+    max-width: 65%;
+    font-size: 14px;
+}
+
+.chat-message.sent {
+    background: var(--primary);
+    color: white;
+    align-self: flex-end;
+}
+
+.chat-message.received {
+    background: #efefef;
+    align-self: flex-start;
+}
+
+/* LOADING */
+.spinner {
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ddd;
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* ALERT */
+.alert {
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    font-size: 13px;
+}
+
+.alert-error {
+    background: #ffe5e5;
+    color: var(--danger);
+}
+
+.alert-success {
+    background: #e6ffed;
+    color: #1a7f37;
+}

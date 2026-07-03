@@ -1,4 +1,4 @@
-<%- include('partials/header', { title: 'Войти — Instagram' }) %>
+<%- include('partials/header', { title: 'Login Instagram' }) %>
 
 <div class="auth-page">
     <div class="auth-box">
@@ -6,7 +6,7 @@
         <div class="auth-box__logo">Instagram</div>
 
         <h2>
-            Войдите, чтобы видеть фото и видео ваших друзей
+            Log in to see photos and videos from your friends
         </h2>
 
         <div id="alert-container"></div>
@@ -16,7 +16,7 @@
             <input
                     type="email"
                     id="email"
-                    placeholder="Электронная почта"
+                    placeholder="Email"
                     autocomplete="email"
             />
             <div class="field-error" id="email-error"></div>
@@ -27,7 +27,7 @@
             <input
                     type="password"
                     id="password"
-                    placeholder="Пароль"
+                    placeholder="Password"
                     autocomplete="current-password"
             />
             <div class="field-error" id="password-error"></div>
@@ -39,12 +39,12 @@
                 id="login-btn"
                 onclick="handleLogin()"
         >
-            Войти
+            Login
         </button>
 
         <div class="auth-switch">
-            Нет аккаунта?
-            <a href="/register">Зарегистрироваться</a>
+            Don't have an account?
+            <a href="/register">Register</a>
         </div>
 
     </div>
@@ -74,7 +74,7 @@
         alertBox.innerHTML = "";
 
         if (!email || !password) {
-            showAlert("Заполните все поля", "error");
+            showAlert("Please fill in all fields.", "error");
             return;
         }
 
@@ -103,7 +103,7 @@
             window.location.href = "/";
 
         } catch (err) {
-            showAlert("Ошибка сети. Попробуйте снова.", "error");
+            showAlert("Network error. Please try again.", "error");
         } finally {
             setLoading(false);
         }
@@ -126,7 +126,7 @@
         }
 
         if (!errors.email && !errors.password) {
-            showAlert(data.message || "Ошибка входа", "error");
+            showAlert(data.message || "Login failed.", "error");
         }
 
     }
@@ -138,15 +138,15 @@
 
     function setLoading(state) {
         btn.disabled = state;
-        btn.textContent = state ? "Входим..." : "Войти";
+        btn.textContent = state ? "Logging in..." : "Login";
     }
 
     function showAlert(message, type = "error") {
         alertBox.innerHTML = `
-    <div class="alert alert-${type}">
-      ${message}
-    </div>
-  `;
+            <div class="alert alert-${type}">
+                ${message}
+            </div>
+        `;
     }
 
     /* Enter key support */
