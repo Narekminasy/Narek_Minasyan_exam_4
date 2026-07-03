@@ -2,8 +2,12 @@ import "dotenv/config";
 import path from "path";
 import morgan from "morgan";
 import express from "express";
+
+//imort url errors
 import { createServer } from "http";
 import { fileURLToPath } from "url";
+
+//imort routes on file
 import "./migrate.js";
 import routes from "./routes/index.js";
 import errorHandler from "./middlewares/errorHandler.js";
