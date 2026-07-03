@@ -11,8 +11,9 @@ router.get('/', (req, res) => {
 });
 
 // router.get('/login', (req, res) => {
-//     res.send("login ROUTE WORKS");
+//     res.send("REGISTER ROUTE WORKS");
 // });
+
 
 router.get('/login', (req, res) => {
     res.render('login');
@@ -25,6 +26,8 @@ router.get('/register', (req, res) => {
 // router.get('/register', (req, res) => {
 //     res.send("REGISTER ROUTE WORKS");
 // });
+
+
 
 router.get('/chat', (req, res) => {
     res.render('chat');
